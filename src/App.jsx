@@ -16,9 +16,15 @@ class App extends Component {
   handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
     const content = this.state.content
+    const timestamp = new Date()
     const currenttodos = this.state.todos
-    const todos = append(content, currenttodos)
+    const todos = append({ content, timestamp }, currenttodos)
     this.setState({ content: '', todos })
+  }
+
+  handleDelete = (i: number) => {
+    const todos = remove(i, 1, this.state.todos)
+    this.setState({ todos })
   }
 
   render () {
@@ -36,7 +42,12 @@ class App extends Component {
           <button type="submit">+</button>
         </form>
         <ul>
-          {todos.map(todo => <li>{todo}</li>)}
+          {todos.map((todo, i) =>
+            <li key={todo}>
+              {todo.content}
+              <button onClick={this.handleDelete}>X</button>
+            </li>
+          )}
         </ul>
       </div>
     )
