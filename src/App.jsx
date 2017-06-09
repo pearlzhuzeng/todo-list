@@ -1,10 +1,21 @@
+/**
+ * @providesModule App
+ * @flow
+ */
+
 import React, { Component } from 'react'
 import { append, remove, update } from 'ramda'
 import styled from 'styled-components'
 import './App.css'
 
+type Item = {
+  content: string,
+  completed: boolean,
+  timestamp: Date,
+}
+
 class App extends Component {
-  state = {
+  state: { content: string, todos: Item[] } = {
     content: '',
     todos: [],
   }
@@ -15,10 +26,10 @@ class App extends Component {
 
   handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
-    const content = this.state.content
-    const timestamp = new Date()
-    const currenttodos = this.state.todos
-    const todos = append({ content, timestamp }, currenttodos)
+    const todos = append(
+      { content: this.state.content, completed: false, timestamp: new Date() },
+      this.state.todos
+    )
     this.setState({ content: '', todos })
   }
 
@@ -27,18 +38,16 @@ class App extends Component {
     this.setState({ todos })
   }
 
-  handleUpdate = (i, updatedContent) => {
+  handleUpdate = (i: number, updatedContent: Item) => {
     const todos = update(i, updatedContent, this.state.todos)
-    this.setState({ todos })
+    this.setState({ content: '', todos })
   }
 
   render () {
-    const todos = this.state.todos
-
     return (
       <div>
+        <h1>My Todo List</h1>
         <form onSubmit={this.handleSubmit}>
-          <h1>My Todo List</h1>
           <input
             type="text"
             value={this.state.content}
@@ -47,21 +56,22 @@ class App extends Component {
           <button type="submit">+</button>
         </form>
         <ul>
-          {todos.map((todo, i) =>
+          {this.state.todos.map((todo, i) =>
             <li key={todo.timestamp}>
               <input
                 type="checkbox"
                 checked={todo.completed}
-                onChange={e => {
+                onChange={(e: SyntheticInputEvent) => {
                   this.handleUpdate(i, { ...todo, completed: !todo.completed })
                 }}
               />
+              {' '}
               <input
                 style={{ color: todo.completed ? 'grey' : 'black' }}
                 type="text"
                 value={todo.content}
                 onChange={(e: SyntheticInputEvent) => {
-                  this.handleUpdate(i, e.target.value)
+                  this.handleUpdate(i, { ...todo, content: e.target.value })
                 }}
               />
               <button onClick={() => this.handleDelete(i)}>X</button>
