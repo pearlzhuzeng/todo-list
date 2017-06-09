@@ -27,6 +27,11 @@ class App extends Component {
     this.setState({ todos })
   }
 
+  handleUpdate = (i, updatedContent) => {
+    const todos = update(i, updatedContent, this.state.todos)
+    this.setState({ todos })
+  }
+
   render () {
     const todos = this.state.todos
 
@@ -44,8 +49,14 @@ class App extends Component {
         <ul>
           {todos.map((todo, i) =>
             <li key={todo.timestamp}>
-              {todo.content}
-              <button onClick={this.handleDelete}>X</button>
+              <input
+                type="text"
+                value={todo.content}
+                onChange={(e: SyntheticInputEvent) => {
+                  this.handleUpdate(i, e.target.value)
+                }}
+              />
+              <button onClick={() => this.handleDelete(i)}>X</button>
             </li>
           )}
         </ul>
