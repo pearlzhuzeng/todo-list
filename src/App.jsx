@@ -43,7 +43,7 @@ class App extends Component {
         </form>
         <ul>
           {todos.map((todo, i) =>
-            <li key={todo}>
+            <li key={todo.timestamp}>
               {todo.content}
               <button onClick={this.handleDelete}>X</button>
             </li>
