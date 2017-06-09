@@ -50,6 +50,14 @@ class App extends Component {
           {todos.map((todo, i) =>
             <li key={todo.timestamp}>
               <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={e => {
+                  this.handleUpdate(i, { ...todo, completed: !todo.completed })
+                }}
+              />
+              <input
+                style={{ color: todo.completed ? 'grey' : 'black' }}
                 type="text"
                 value={todo.content}
                 onChange={(e: SyntheticInputEvent) => {
