@@ -57,25 +57,13 @@ class App extends Component {
         </form>
         <ul>
           {this.state.todos.map((todo, i) =>
-            <li key={todo.timestamp}>
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={(e: SyntheticInputEvent) => {
-                  this.handleUpdate(i, { ...todo, completed: !todo.completed })
-                }}
-              />
-              {' '}
-              <input
-                style={{ color: todo.completed ? 'grey' : 'black' }}
-                type="text"
-                value={todo.content}
-                onChange={(e: SyntheticInputEvent) => {
-                  this.handleUpdate(i, { ...todo, content: e.target.value })
-                }}
-              />
-              <button onClick={() => this.handleDelete(i)}>X</button>
-            </li>
+            <TodoItem
+              key={todo.timestamp}
+              i={i}
+              todo={todo}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
+            />
           )}
         </ul>
       </div>
@@ -84,3 +72,41 @@ class App extends Component {
 }
 
 export default App
+
+class TodoItem extends Component {
+  handleCompletedStatusChange = () => {
+    const { i, todo, onUpdate } = this.props
+    onUpdate(i, { ...todo, completed: !todo.completed })
+  }
+
+  handleContentChange = (e: SyntheticInputEvent) => {
+    const { i, todo, onUpdate } = this.props
+    onUpdate(i, { ...todo, content: e.target.value })
+  }
+
+  handleDelete = () => {
+    const { i, onDelete } = this.props
+    onDelete(i)
+  }
+
+  render () {
+    const { todo } = this.props
+    return (
+      <li>
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={this.handleCompletedStatusChange}
+        />
+        {' '}
+        <input
+          style={{ color: todo.completed ? 'grey' : 'black' }}
+          type="text"
+          value={todo.content}
+          onChange={this.handleContentChange}
+        />
+        <button onClick={this.handleDelete}>X</button>
+      </li>
+    )
+  }
+}
