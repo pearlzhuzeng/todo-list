@@ -121,7 +121,10 @@ class TodoItem extends Component {
         />
         {' '}
         <Itembox
-          style={{ color: todo.completed ? 'grey' : 'black' }}
+          style={{
+            textDecoration: todo.completed ? 'line-through' : 'none',
+            color: todo.completed ? 'grey' : 'black',
+          }}
           type="text"
           value={todo.content}
           onChange={this.handleContentChange}
