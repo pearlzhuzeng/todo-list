@@ -46,14 +46,15 @@ class App extends Component {
   render () {
     return (
       <div>
-        <h1>My Todo List</h1>
+        <Heading>My Todo List</Heading>
         <form onSubmit={this.handleSubmit}>
-          <input
+          <Inputbox
             type="text"
+            placeholder="add todo item"
             value={this.state.content}
             onChange={this.handleChange}
           />
-          <button type="submit">+</button>
+          <Addbutton type="submit">+</Addbutton>
         </form>
         <ul>
           {this.state.todos.map((todo, i) =>
@@ -72,6 +73,26 @@ class App extends Component {
 }
 
 export default App
+
+const Heading = styled.h1`
+  color: rebeccapurple;
+  margin-bottom: 1em;
+`
+
+const Inputbox = styled.input`
+  font-size: 18px;
+  border-radius: 5px;
+  margin-bottom: 1em;
+`
+
+const Addbutton = styled.button`
+  background-color: DarkSeaGreen;
+  border-radius: 5px;
+  border: solid 0.5px PaleGreen;
+  padding: 1px 8px;
+  color: white;
+  font-size: 20px;
+`
 
 class TodoItem extends Component {
   handleCompletedStatusChange = () => {
@@ -92,21 +113,36 @@ class TodoItem extends Component {
   render () {
     const { todo } = this.props
     return (
-      <li>
-        <input
+      <ListItem>
+        <Checkbox
           type="checkbox"
           checked={todo.completed}
           onChange={this.handleCompletedStatusChange}
         />
         {' '}
-        <input
+        <Itembox
           style={{ color: todo.completed ? 'grey' : 'black' }}
           type="text"
           value={todo.content}
           onChange={this.handleContentChange}
         />
         <button onClick={this.handleDelete}>X</button>
-      </li>
+      </ListItem>
     )
   }
 }
+
+const ListItem = styled.li`
+  list-style: none;
+`
+
+const Itembox = styled.input`
+  font-size: 20px;
+  margin-bottom: 0.4em;
+  margin-left: 1em;
+  border: none;
+  background-color: Mintcream;
+`
+const Checkbox = styled.input`
+  font-size: 20px;
+`

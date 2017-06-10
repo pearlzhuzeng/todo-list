@@ -1,5 +1,9 @@
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  padding: 2em;
+  max-width: 40em;
+  margin-top: 3em;
+  text-align: center;
   font-family: sans-serif;
+  background: Mintcream;
 }
